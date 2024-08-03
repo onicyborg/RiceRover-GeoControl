@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LahanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,11 @@ Route::group(['middleware' => 'role:user'], function () {
     Route::get('/user/dashboard', function () {
         return view('users.dashboard');
     });
+    Route::get('/user/data-lahan', [LahanController::class, 'index']);
+    Route::get('/user/add-lahan', function(){
+        return view('users.input-data-lahan');
+    });
+    Route::post('/submit-data-lahan', [LahanController::class, 'store']);
 });
 
 Route::group(['middleware' => 'role:admin'], function () {
