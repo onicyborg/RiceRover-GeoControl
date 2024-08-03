@@ -65,6 +65,13 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/simple-datatables/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/leaflet/leaflet.css') }}" />
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        .leaflet-container {
+            z-index: 1;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
 @endpush
 
 @push('scripts')

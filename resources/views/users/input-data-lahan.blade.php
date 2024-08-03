@@ -131,6 +131,7 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <style>
         .leaflet-container {
+            z-index: 1;
             max-width: 100%;
             max-height: 100%;
         }
