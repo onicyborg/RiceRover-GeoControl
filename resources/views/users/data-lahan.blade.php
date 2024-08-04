@@ -107,7 +107,7 @@
                     <p><b>Awal Tanam:</b> {{ $lahan->awal_tanam }}</p>
                     <p><b>Akhir Tanam:</b> {{ $lahan->akhir_tanam }}</p>
                     <p><b>Gambar:</b></p>
-                    <img src="{{ Storage::url($lahan->gambar) }}" alt="Gambar Lahan" style="width: 100%; height: auto;">
+                    <img src="{{ Storage::url('/uploads/'$lahan->gambar) }}" alt="Gambar Lahan" style="width: 100%; height: auto;">
                 </div>
             `, {
                         maxWidth: "auto"
