@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('alamat_lahan');
             $table->string('denah_lahan');
             $table->string('gambar');
-            $table->string('hasil_tanam');
+            $table->integer('hasil_panen');
             $table->date('awal_tanam');
             $table->date('akhir_tanam');
             $table->unsignedBigInteger('user_id');

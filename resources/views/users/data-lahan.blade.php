@@ -31,7 +31,8 @@
                             <th>Luas Lahan</th>
                             <th>Isi Lahan</th>
                             <th>Pemilik Lahan</th>
-                            <th>Hasil Tanam</th>
+                            <th>Total Hasil Panen</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,7 +43,12 @@
                                 <td>{{ $lahan->luas_lahan }}</td>
                                 <td>{{ $lahan->isi_lahan }}</td>
                                 <td>{{ $lahan->pemilik_lahan }}</td>
-                                <td>{{ $lahan->hasil_tanam }}</td>
+                                <td>{{ $lahan->hasil_panen }} Kg</td>
+                                <td>
+                                    <a href="/user/update-data-lahan/{{ $lahan->id }}" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -103,11 +109,11 @@
                     <p><b>Isi Lahan:</b> {{ $lahan->isi_lahan }}</p>
                     <p><b>Pemilik Lahan:</b> {{ $lahan->pemilik_lahan }}</p>
                     <p><b>Alamat Lahan:</b> {{ $lahan->alamat_lahan }}</p>
-                    <p><b>Hasil Tanam:</b> {{ $lahan->hasil_tanam }}</p>
+                    <p><b>Hasil Panen:</b> {{ $lahan->hasil_panen }} Kg</p>
                     <p><b>Awal Tanam:</b> {{ $lahan->awal_tanam }}</p>
                     <p><b>Akhir Tanam:</b> {{ $lahan->akhir_tanam }}</p>
                     <p><b>Gambar:</b></p>
-                    <img src="{{ asset('/storage/uploads/'.$lahan->gambar) }}" alt="Gambar Lahan" style="width: 100%; height: auto;">
+                    <img src="{{ asset('/storage/uploads/' . $lahan->gambar) }}" alt="Gambar Lahan" style="width: 100%; height: auto;">
                 </div>
             `, {
                         maxWidth: "auto"

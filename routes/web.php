@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('login');
 
 Route::get('/registrasi', function(){
     return view('registrasi');
@@ -35,6 +35,8 @@ Route::group(['middleware' => 'role:user'], function () {
         return view('users.input-data-lahan');
     });
     Route::post('/submit-data-lahan', [LahanController::class, 'store']);
+    Route::get('/user/update-data-lahan/{id}', [LahanController::class, 'edit_lahan']);
+    Route::put('/update-data-lahan/{id}', [LahanController::class, 'update']);
 });
 
 Route::group(['middleware' => 'role:admin'], function () {
