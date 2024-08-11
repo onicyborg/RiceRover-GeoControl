@@ -93,6 +93,7 @@
     <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="{{ asset('assets/js/main2.js') }}"></script>
 
     <script>
         @if (session('success'))
