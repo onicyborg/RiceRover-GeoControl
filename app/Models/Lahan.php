@@ -15,4 +15,9 @@ class Lahan extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function alokasi_pupuk()
+    {
+        return $this->hasMany(AlokasiPupuk::class, 'lahan_id', 'id');
+    }
 }

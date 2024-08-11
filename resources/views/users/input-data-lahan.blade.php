@@ -36,6 +36,24 @@
                                 <form action="/submit-data-lahan" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
+                                        <label for="nama_lahan">Nama Petani / Kelompok Tani</label>
+                                        <input type="text" id="nama_kelompok_tani" name="nama_kelompok_tani"
+                                            value="{{ old('nama_kelompok_tani') }}"
+                                            class="form-control @error('nama_kelompok_tani') is-invalid @enderror">
+                                        @error('nama_kelompok_tani')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nama_lahan">Nomor Kartu Tani (Jika Ada)</label>
+                                        <input type="number" id="nomor_kartu_tani" name="nomor_kartu_tani"
+                                            value="{{ old('nomor_kartu_tani') }}"
+                                            class="form-control @error('nomor_kartu_tani') is-invalid @enderror">
+                                        @error('nomor_kartu_tani')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <label for="nama_lahan">Nama Lahan</label>
                                         <input type="text" id="nama_lahan" name="nama_lahan"
                                             value="{{ old('nama_lahan') }}"

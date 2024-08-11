@@ -53,7 +53,11 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             // Autentikasi berhasil, redirect ke halaman yang sesuai
-            return redirect('/user/dashboard')->with('success', 'Login berhasil!');
+            if(Auth::user()->role == 'admin'){
+                return redirect('/admin/dashboard')->with('success', 'Login berhasil!');
+            }else{
+                return redirect('/user/dashboard')->with('success', 'Login berhasil!');
+            }
         }
 
         // Jika login gagal, redirect kembali dengan error
@@ -65,6 +69,6 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect('/login')->with('success', 'Anda telah berhasil logout.');
+        return redirect('/')->with('success', 'Anda telah berhasil logout.');
     }
 }

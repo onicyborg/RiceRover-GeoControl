@@ -19,7 +19,6 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <span>Table Data Lahan</span>
-                    <a href="/user/add-lahan" class="btn btn-primary">Tambah Lahan</a>
                 </div>
             </div>
             <div class="card-body">
@@ -27,6 +26,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Penggarap</th>
                             <th>Nama Lahan</th>
                             <th>Luas Lahan</th>
                             <th>Isi Lahan</th>
@@ -39,14 +39,15 @@
                         @foreach ($lahans as $index => $lahan)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
+                                <td>{{ $lahan->user->name }}</td>
                                 <td>{{ $lahan->nama_lahan }}</td>
                                 <td>{{ $lahan->luas_lahan }}</td>
                                 <td>{{ $lahan->isi_lahan }}</td>
                                 <td>{{ $lahan->pemilik_lahan }}</td>
                                 <td>{{ $lahan->hasil_panen }} Kg</td>
                                 <td>
-                                    <a href="/user/update-data-lahan/{{ $lahan->id }}" class="btn btn-sm btn-warning">
-                                        <i class="bi bi-pencil"></i>
+                                    <a href="/admin/detail-lahan/{{ $lahan->id }}" class="btn btn-info d-flex justify-content-center align-items-center">
+                                        <i class="bi bi-info-circle"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -105,6 +106,7 @@
                     .bindPopup(`
                 <div style="width: 300px;">
                     <h4>{{ $lahan->nama_lahan }}</h4>
+                    <p><b>Penggarap Lahan:</b> {{ $lahan->user->name }}</p>
                     <p><b>Nama Kelompok Tani:</b> {{ $lahan->nama_kelompok_tani }}</p>
                     <p><b>Nomor Kartu Tani:</b> {{ $lahan->nomor_kartu_tani ? $lahan->nomor_kartu_tani : '-' }}</p>
                     <p><b>Luas Lahan:</b> {{ $lahan->luas_lahan }} M2</p>

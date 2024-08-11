@@ -12,14 +12,22 @@ class LahanController extends Controller
 {
     public function index()
     {
-        $lahans = Lahan::where('user_id', Auth::id())->get();
+        if (Auth::user()->role == 'admin') {
+            $lahans = Lahan::all();
 
-        return view('users.data-lahan', ['lahans' => $lahans]);
+            return view('admin.data-lahan', ['lahans' => $lahans]);
+        } else {
+            $lahans = Lahan::where('user_id', Auth::id())->get();
+
+            return view('users.data-lahan', ['lahans' => $lahans]);
+        }
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'nama_kelompok_tani' => 'required|string|max:255',
+            'nomor_kartu_tani' => 'nullable|string|max:255',
             'nama_lahan' => 'required|string|max:255',
             'luas_lahan' => 'required|numeric',
             'isi_lahan' => 'required|string|max:255',
@@ -34,6 +42,8 @@ class LahanController extends Controller
 
         $lahan = new Lahan();
 
+        $lahan->nama_kelompok_tani = $request->nama_kelompok_tani;
+        $lahan->nomor_kartu_tani = $request->nomor_kartu_tani;
         $lahan->nama_lahan = $request->nama_lahan;
         $lahan->luas_lahan = $request->luas_lahan;
         $lahan->isi_lahan = $request->isi_lahan;
@@ -108,5 +118,11 @@ class LahanController extends Controller
         $lahan->save();
 
         return redirect('/user/data-lahan')->with('success', 'Data Lahan Berhasil Diperbarui');
+    }
+
+    public function detail_lahan($id)
+    {
+        $lahan = Lahan::find($id);
+        return view('admin.alokasi-lahan', ['lahan' => $lahan, 'id' => $id]);
     }
 }

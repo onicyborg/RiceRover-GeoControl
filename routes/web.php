@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlokasiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LahanController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,8 @@ Route::get('/registrasi', function(){
     return view('registrasi');
 });
 
+Route::get('/logout', [AuthController::class, 'logout']);
+
 Route::post('/registrasi', [AuthController::class, 'registrasi']);
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -41,6 +44,11 @@ Route::group(['middleware' => 'role:user'], function () {
 
 Route::group(['middleware' => 'role:admin'], function () {
     Route::get('/admin/dashboard', function () {
-        //
+        return view('admin.dashboard');
     });
+    Route::get('/admin/data-lahan', [LahanController::class, 'index']);
+
+    Route::get('/admin/detail-lahan/{id}', [LahanController::class, 'detail_lahan']);
+
+    Route::post('/alokasi-pupuk/store/{id}', [AlokasiController::class, 'store']);
 });

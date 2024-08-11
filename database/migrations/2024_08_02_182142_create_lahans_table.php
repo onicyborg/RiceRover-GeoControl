@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('lahans', function (Blueprint $table) {
             $table->id();
             $table->string('nama_lahan');
+            $table->string('nama_kelompok_tani');
+            $table->string('nomor_kartu_tani')->nullable();
             $table->integer('luas_lahan');
             $table->string('isi_lahan');
             $table->string('pemilik_lahan');
