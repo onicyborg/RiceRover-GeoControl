@@ -33,6 +33,7 @@
                                     <th>Username</th>
                                     <th>Address</th>
                                     <th>Role</th>
+                                    <th>Bergabung Pada</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -44,6 +45,7 @@
                                         <td>{{ $user->username }}</td>
                                         <td>{{ $user->alamat }}</td>
                                         <td>{{ ucfirst($user->role) }}</td>
+                                        <td>{{ $user->created_at }}</td>
                                         <td>
                                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#updateUserModal{{ $user->id }}">Update</button>
