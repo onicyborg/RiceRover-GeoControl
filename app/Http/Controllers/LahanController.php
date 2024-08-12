@@ -123,6 +123,11 @@ class LahanController extends Controller
     public function detail_lahan($id)
     {
         $lahan = Lahan::find($id);
-        return view('admin.alokasi-lahan', ['lahan' => $lahan, 'id' => $id]);
+
+        if(Auth::user()->role == 'admin'){
+            return view('admin.alokasi-lahan', ['lahan' => $lahan, 'id' => $id]);
+        }else{
+            return view('users.alokasi-lahan', ['lahan' => $lahan, 'id' => $id]);
+        }
     }
 }

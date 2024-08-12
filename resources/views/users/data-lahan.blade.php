@@ -40,13 +40,16 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $lahan->nama_lahan }}</td>
-                                <td>{{ $lahan->luas_lahan }}</td>
+                                <td>{{ $lahan->luas_lahan }} M&sup2;</td>
                                 <td>{{ $lahan->isi_lahan }}</td>
                                 <td>{{ $lahan->pemilik_lahan }}</td>
                                 <td>{{ $lahan->hasil_panen }} Kg</td>
                                 <td>
                                     <a href="/user/update-data-lahan/{{ $lahan->id }}" class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="/user/data-alokasi/{{ $lahan->id }}" class="btn btn-sm btn-info">
+                                        <i class="bi bi-eye"></i>
                                     </a>
                                 </td>
                             </tr>

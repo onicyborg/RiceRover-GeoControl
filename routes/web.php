@@ -41,6 +41,7 @@ Route::group(['middleware' => 'role:user'], function () {
     Route::post('/submit-data-lahan', [LahanController::class, 'store']);
     Route::get('/user/update-data-lahan/{id}', [LahanController::class, 'edit_lahan']);
     Route::put('/update-data-lahan/{id}', [LahanController::class, 'update']);
+    Route::get('/user/data-alokasi/{id}', [LahanController::class, 'detail_lahan']);
 });
 
 Route::group(['middleware' => 'role:admin'], function () {
