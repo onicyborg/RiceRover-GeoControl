@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlokasiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LahanController;
+use App\Http\Controllers\ManageUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,4 +52,10 @@ Route::group(['middleware' => 'role:admin'], function () {
     Route::get('/admin/detail-lahan/{id}', [LahanController::class, 'detail_lahan']);
 
     Route::post('/alokasi-pupuk/store/{id}', [AlokasiController::class, 'store']);
+    Route::put('/alokasi-pupuk/{id}/update', [AlokasiController::class, 'update']);
+
+    Route::get('/admin/manage-user', [ManageUserController::class, 'index']);
+    Route::post('/store-new-user', [ManageUserController::class, 'store']);
+    Route::put('/admin/{id}/update', [ManageUserController::class, 'update']);
+    Route::delete('/admin/{id}/delete', [ManageUserController::class, 'destroy']);
 });

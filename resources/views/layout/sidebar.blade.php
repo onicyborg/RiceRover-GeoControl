@@ -3,7 +3,7 @@
         <div class="sidebar-header">
             <div class="d-flex justify-content-between">
                 <div class="logo">
-                    <a href="index.html"><img src="{{ asset('assets/images/logo/logo.png') }}" alt="Logo"
+                    <a href="index.html"><img src="{{ asset('assets/images/logo.png') }}" alt="">&nbsp;<img src="{{ asset('assets/images/logo_name.png') }}" alt="Logo"
                             srcset=""></a>
                 </div>
                 <div class="toggler">
@@ -25,6 +25,12 @@
                         <a href="/admin/data-lahan" class='sidebar-link'>
                             <i class="bi bi-map-fill"></i>
                             <span>Data Seluruh Lahan</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/admin/manage-user" class='sidebar-link'>
+                            <i class="bi bi-people-fill"></i>
+                            <span>Manage User</span>
                         </a>
                     </li>
                 @else
