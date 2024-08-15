@@ -76,6 +76,8 @@ class LahanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'nama_kelompok_tani' => 'required|string|max:255',
+            'nomor_kartu_tani' => 'nullable|string|max:255',
             'nama_lahan' => 'required|string|max:255',
             'luas_lahan' => 'required|numeric',
             'isi_lahan' => 'required|string|max:255',
@@ -90,6 +92,8 @@ class LahanController extends Controller
 
         $lahan = Lahan::findOrFail($id);
 
+        $lahan->nama_kelompok_tani = $request->nama_kelompok_tani;
+        $lahan->nomor_kartu_tani = $request->nomor_kartu_tani;
         $lahan->nama_lahan = $request->nama_lahan;
         $lahan->luas_lahan = $request->luas_lahan;
         $lahan->isi_lahan = $request->isi_lahan;
