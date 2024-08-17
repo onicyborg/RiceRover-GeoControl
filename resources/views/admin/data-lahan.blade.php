@@ -91,7 +91,7 @@
         let dataTable = new simpleDatatables.DataTable(table1);
 
         // Leaflet Map
-        var map = L.map('map').setView([-6.200000, 106.816666], 13);
+        var map = L.map('map').setView([-6.927806803218691, 106.93018482302313], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
