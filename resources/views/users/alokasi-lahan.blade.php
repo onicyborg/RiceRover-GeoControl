@@ -169,7 +169,7 @@
             <p><b>Isi Lahan:</b> {{ $lahan->isi_lahan }}</p>
             <p><b>Pemilik Lahan:</b> {{ $lahan->pemilik_lahan }}</p>
             <p><b>Alamat Lahan:</b> {{ $lahan->alamat_lahan }}</p>
-            <p><b>Hasil Panen:</b> {{ $lahan->hasil_tanam }} Kg</p>
+            <p><b>Hasil Panen:</b> {{ $lahan->hasil_panen }} Kg</p>
             <p><b>Awal Tanam:</b> {{ $lahan->awal_tanam }}</p>
             <p><b>Akhir Tanam:</b> {{ $lahan->akhir_tanam }}</p>
             <p><b>Gambar:</b></p>

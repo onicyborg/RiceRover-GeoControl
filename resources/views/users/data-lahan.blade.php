@@ -32,6 +32,7 @@
                             <th>Isi Lahan</th>
                             <th>Pemilik Lahan</th>
                             <th>Total Hasil Panen</th>
+                            <th>Status Lahan</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -44,6 +45,8 @@
                                 <td>{{ $lahan->isi_lahan }}</td>
                                 <td>{{ $lahan->pemilik_lahan }}</td>
                                 <td>{{ $lahan->hasil_panen }} Kg</td>
+                                <td>{{ $lahan->status == 'berjalan' ? 'Belum Selesai Masa Panen' : 'Selesai Masa Panen' }}
+                                </td>
                                 <td>
                                     <a href="/user/update-data-lahan/{{ $lahan->id }}" class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i>
@@ -51,7 +54,14 @@
                                     <a href="/user/data-alokasi/{{ $lahan->id }}" class="btn btn-sm btn-info">
                                         <i class="bi bi-eye"></i>
                                     </a>
+                                    @if ($lahan->status == 'berjalan')
+                                        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#modalSelesai{{ $lahan->id }}">
+                                            <i class="bi bi-check2-circle"></i>
+                                        </button>
+                                    @endif
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -68,6 +78,36 @@
             </div>
         </div>
     </div>
+
+    @foreach ($lahans as $lahan)
+        @if ($lahan->status == 'berjalan')
+            <!-- Modal -->
+            <div class="modal fade" id="modalSelesai{{ $lahan->id }}" tabindex="-1"
+                aria-labelledby="modalSelesaiLabel{{ $lahan->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalSelesaiLabel{{ $lahan->id }}">Konfirmasi Selesai Masa Panen
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Apakah Anda yakin ingin mengubah status lahan <strong>{{ $lahan->nama_lahan }}</strong> menjadi
+                            "Selesai Masa Panen"? Action ini tidak dapat di kembalikan dan lahan ini tidak akan mendapat alokasi pupuk lagi.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <form action="/update-status-lahan/{{ $lahan->id }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-success">Ya, Ubah Status</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endforeach
 @endsection
 
 @push('styles')

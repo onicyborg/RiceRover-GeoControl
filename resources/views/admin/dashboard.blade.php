@@ -24,190 +24,71 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon purple">
-                                            <i class="iconly-boldShow"></i>
+                                            <i class="iconly-boldHome"></i> <!-- Ikon untuk Total Lahan Terdaftar -->
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Profile Views</h6>
-                                        <h6 class="font-extrabold mb-0">112.000</h6>
+                                        <h6 class="text-muted font-semibold">Total Lahan Terdaftar</h6>
+                                        <h6 class="font-extrabold mb-0">{{ $total_lahan }}</h6>
+                                        <!-- Ganti dengan data dinamis -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-6 col-lg-3 col-md-6">
                         <div class="card">
                             <div class="card-body px-3 py-4-5">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon blue">
-                                            <i class="iconly-boldProfile"></i>
+                                            <i class="iconly-boldTick-Square"></i> <!-- Ikon untuk Alokasi Terealisasi -->
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Followers</h6>
-                                        <h6 class="font-extrabold mb-0">183.000</h6>
+                                        <h6 class="text-muted font-semibold">Alokasi Terealisasi</h6>
+                                        <h6 class="font-extrabold mb-0">{{ $alokasi }}</h6>
+                                        <!-- Ganti dengan data dinamis -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-6 col-lg-3 col-md-6">
                         <div class="card">
                             <div class="card-body px-3 py-4-5">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon green">
-                                            <i class="iconly-boldAdd-User"></i>
+                                            <i class="iconly-boldUser1"></i> <!-- Ikon untuk Jumlah Penggarap -->
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Following</h6>
-                                        <h6 class="font-extrabold mb-0">80.000</h6>
+                                        <h6 class="text-muted font-semibold">Jumlah Penggarap</h6>
+                                        <h6 class="font-extrabold mb-0">{{ $penggarap }}</h6>
+                                        <!-- Ganti dengan data dinamis -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-6 col-lg-3 col-md-6">
                         <div class="card">
                             <div class="card-body px-3 py-4-5">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon red">
-                                            <i class="iconly-boldBookmark"></i>
+                                            <i class="iconly-boldCalendar"></i> <!-- Ikon untuk Lahan Selesai Masa Panen -->
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Saved Post</h6>
-                                        <h6 class="font-extrabold mb-0">112</h6>
+                                        <h6 class="text-muted font-semibold">Lahan Selesai Masa Panen</h6>
+                                        <h6 class="font-extrabold mb-0">{{ $lahan_selesai }}</h6>
+                                        <!-- Ganti dengan data dinamis -->
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Profile Visit</h4>
-                            </div>
-                            <div class="card-body">
-                                <div id="chart-profile-visit"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-xl-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Profile Visit</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="d-flex align-items-center">
-                                            <svg class="bi text-primary" width="32" height="32" fill="blue"
-                                                style="width:10px">
-                                                <use
-                                                    xlink:href="{{ asset('assets/vendors/bootstrap-icons/bootstrap-icons.svg#circle-fill') }}" />
-                                            </svg>
-                                            <h5 class="mb-0 ms-3">Europe</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <h5 class="mb-0">862</h5>
-                                    </div>
-                                    <div class="col-12">
-                                        <div id="chart-europe"></div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="d-flex align-items-center">
-                                            <svg class="bi text-success" width="32" height="32" fill="blue"
-                                                style="width:10px">
-                                                <use
-                                                    xlink:href="{{ asset('assets/vendors/bootstrap-icons/bootstrap-icons.svg#circle-fill') }}" />
-                                            </svg>
-                                            <h5 class="mb-0 ms-3">America</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <h5 class="mb-0">375</h5>
-                                    </div>
-                                    <div class="col-12">
-                                        <div id="chart-america"></div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="d-flex align-items-center">
-                                            <svg class="bi text-danger" width="32" height="32" fill="blue"
-                                                style="width:10px">
-                                                <use
-                                                    xlink:href="{{ asset('assets/vendors/bootstrap-icons/bootstrap-icons.svg#circle-fill') }}" />
-                                            </svg>
-                                            <h5 class="mb-0 ms-3">Indonesia</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <h5 class="mb-0">1025</h5>
-                                    </div>
-                                    <div class="col-12">
-                                        <div id="chart-indonesia"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-xl-8">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Latest Comments</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-lg">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Comment</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="col-3">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar avatar-md">
-                                                            <img src="{{ asset('assets/images/faces/5.jpg') }}">
-                                                        </div>
-                                                        <p class="font-bold ms-3 mb-0">Si Cantik</p>
-                                                    </div>
-                                                </td>
-                                                <td class="col-auto">
-                                                    <p class=" mb-0">Congratulations on your graduation!</p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-3">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar avatar-md">
-                                                            <img src="{{ asset('assets/images/faces/2.jpg') }}">
-                                                        </div>
-                                                        <p class="font-bold ms-3 mb-0">Si Ganteng</p>
-                                                    </div>
-                                                </td>
-                                                <td class="col-auto">
-                                                    <p class=" mb-0">Wow amazing design! Can you make another
-                                                        tutorial for
-                                                        this design?</p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -219,62 +100,93 @@
                     <div class="card-body py-4 px-5">
                         <div class="d-flex align-items-center">
                             <div class="avatar avatar-xl">
-                                <img src="{{ asset('assets/images/faces/1.jpg') }}" alt="Face 1">
+                                @if (Auth::user()->avatar != '')
+                                    <img src="{{ asset('storage/uploads/' . Auth::user()->avatar) }}" alt="Face 1">
+                                @else
+                                    <img src="{{ asset('assets/images/faces/1.jpg') }}" alt="Face 1">
+                                @endif
                             </div>
                             <div class="ms-3 name">
-                                <h5 class="font-bold">John Duck</h5>
-                                <h6 class="text-muted mb-0">@johnducky</h6>
+                                <h5 class="font-bold">{{ Auth::user()->name }}</h5>
+                                <h6 class="text-muted mb-0">{{ '@' . Auth::user()->username }}</h6>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Recent Messages</h4>
-                    </div>
-                    <div class="card-content pb-4">
-                        <div class="recent-message d-flex px-4 py-3">
-                            <div class="avatar avatar-lg">
-                                <img src="{{ asset('assets/images/faces/4.jpg') }}">
-                            </div>
-                            <div class="name ms-4">
-                                <h5 class="mb-1">Hank Schrader</h5>
-                                <h6 class="text-muted mb-0">@johnducky</h6>
-                            </div>
-                        </div>
-                        <div class="recent-message d-flex px-4 py-3">
-                            <div class="avatar avatar-lg">
-                                <img src="{{ asset('assets/images/faces/5.jpg') }}">
-                            </div>
-                            <div class="name ms-4">
-                                <h5 class="mb-1">Dean Winchester</h5>
-                                <h6 class="text-muted mb-0">@imdean</h6>
-                            </div>
-                        </div>
-                        <div class="recent-message d-flex px-4 py-3">
-                            <div class="avatar avatar-lg">
-                                <img src="{{ asset('assets/images/faces/1.jpg') }}">
-                            </div>
-                            <div class="name ms-4">
-                                <h5 class="mb-1">John Dodol</h5>
-                                <h6 class="text-muted mb-0">@dodoljohn</h6>
-                            </div>
-                        </div>
-                        <div class="px-4">
-                            <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>Start
-                                Conversation</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Visitors Profile</h4>
-                    </div>
-                    <div class="card-body">
-                        <div id="chart-visitors-profile"></div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-12 col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Lokasi Lahan</h5>
+                        <div id="map" style="height: 500px;"></div> <!-- Ukuran peta ditentukan oleh height -->
+                    </div>
+                </div>
+            </div>
+
         </section>
     </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/vendors/leaflet/leaflet.css') }}" />
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('assets/vendors/leaflet/leaflet.js') }}"></script>
+    <script>
+
+        // Leaflet Map
+        var map = L.map('map').setView([-6.200000, 106.816666], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var markers = [];
+
+        @foreach ($lahans as $lahan)
+            @if ($lahan->denah_lahan)
+                var coords = '{{ $lahan->denah_lahan }}'.split(', ');
+                var marker = L.marker([parseFloat(coords[0]), parseFloat(coords[1])]).addTo(map)
+                    .bindPopup(`
+                <div style="width: 300px;">
+                    <h4>{{ $lahan->nama_lahan }}</h4>
+                    <p><b>Penggarap Lahan:</b> {{ $lahan->user->name }}</p>
+                    <p><b>Nama Kelompok Tani:</b> {{ $lahan->nama_kelompok_tani }}</p>
+                    <p><b>Nomor Kartu Tani:</b> {{ $lahan->nomor_kartu_tani ? $lahan->nomor_kartu_tani : '-' }}</p>
+                    <p><b>Luas Lahan:</b> {{ $lahan->luas_lahan }} M2</p>
+                    <p><b>Isi Lahan:</b> {{ $lahan->isi_lahan }}</p>
+                    <p><b>Pemilik Lahan:</b> {{ $lahan->pemilik_lahan }}</p>
+                    <p><b>Alamat Lahan:</b> {{ $lahan->alamat_lahan }}</p>
+                    <p><b>Hasil Panen:</b> {{ $lahan->hasil_panen }} Kg</p>
+                    <p><b>Awal Tanam:</b> {{ $lahan->awal_tanam }}</p>
+                    <p><b>Akhir Tanam:</b> {{ $lahan->akhir_tanam }}</p>
+                    <p><b>Gambar:</b></p>
+                    <img src="{{ asset('/storage/uploads/' . $lahan->gambar) }}" alt="Gambar Lahan" style="width: 100%; height: auto;">
+                </div>
+            `, {
+                        maxWidth: "auto"
+                    });
+
+                markers.push([parseFloat(coords[0]), parseFloat(coords[1])]);
+            @endif
+        @endforeach
+
+        if (markers.length > 0) {
+            var bounds = L.latLngBounds(markers);
+            map.fitBounds(bounds);
+        }
+
+
+
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonText: 'OK'
+            });
+        @endif
+    </script>
+@endpush

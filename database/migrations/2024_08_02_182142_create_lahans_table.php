@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('hasil_panen');
             $table->date('awal_tanam');
             $table->date('akhir_tanam');
+            $table->enum('status', ['berjalan', 'selesai']);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlokasiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LahanController;
 use App\Http\Controllers\ManageUserController;
 use Illuminate\Support\Facades\Route;
@@ -31,9 +32,7 @@ Route::post('/registrasi', [AuthController::class, 'registrasi']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => 'role:user'], function () {
-    Route::get('/user/dashboard', function () {
-        return view('users.dashboard');
-    });
+    Route::get('/user/dashboard', [DashboardController::class, 'index']);
     Route::get('/user/data-lahan', [LahanController::class, 'index']);
     Route::get('/user/add-lahan', function(){
         return view('users.input-data-lahan');
@@ -42,12 +41,11 @@ Route::group(['middleware' => 'role:user'], function () {
     Route::get('/user/update-data-lahan/{id}', [LahanController::class, 'edit_lahan']);
     Route::put('/update-data-lahan/{id}', [LahanController::class, 'update']);
     Route::get('/user/data-alokasi/{id}', [LahanController::class, 'detail_lahan']);
+    Route::put('/update-status-lahan/{id}', [LahanController::class, 'update_status']);
 });
 
 Route::group(['middleware' => 'role:admin'], function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    });
+    Route::get('/admin/dashboard', [DashboardController::class, 'index']);
     Route::get('/admin/data-lahan', [LahanController::class, 'index']);
 
     Route::get('/admin/detail-lahan/{id}', [LahanController::class, 'detail_lahan']);

@@ -49,7 +49,7 @@
                 <h4>List Alokasi Pupuk</h4>
                 <!-- Button untuk memanggil modal -->
                 <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal"
-                    data-bs-target="#tambahAlokasiModal">
+                    data-bs-target="#tambahAlokasiModal" {{ $lahan->status == 'selesai' ? 'disabled' : '' }}>
                     Tambah Alokasi Pupuk
                 </button>
             </div>

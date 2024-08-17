@@ -59,6 +59,7 @@ class LahanController extends Controller
         $lahan->hasil_panen = $request->hasil_panen;
         $lahan->awal_tanam = $request->awal_tanam;
         $lahan->akhir_tanam = $request->akhir_tanam;
+        $lahan->status = 'berjalan';
         $lahan->user_id = Auth::id();
 
         $lahan->save();
@@ -71,6 +72,15 @@ class LahanController extends Controller
         $lahan = Lahan::find($id);
 
         return view('users.update-data', ['lahan' => $lahan]);
+    }
+
+    public function update_status($id)
+    {
+        $lahan = Lahan::find($id);
+        $lahan->status = 'selesai';
+        $lahan->save();
+
+        return redirect()->back()->with('success', 'Status Lahan Berhasil Diubah');
     }
 
     public function update(Request $request, $id)
