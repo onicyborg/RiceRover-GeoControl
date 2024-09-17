@@ -54,6 +54,7 @@
                         <tr>
                             <th>No</th>
                             <th>Penanggung Jawab</th>
+                            <th>Jabatan Penanggung Jawab</th>
                             <th>Musim Tanam Ke</th>
                             <th>Total Nilai Alokasi</th>
                             <th>Action</th>
@@ -64,6 +65,7 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $alokasi->nama_penanggung_jawab }}</td>
+                                <td>{{ $alokasi->jabatan_penanggung_jawab }}</td>
                                 <td>{{ $alokasi->musim_tanam }}</td>
                                 <td>Rp. {{ number_format($alokasi->list_pupuk->sum('total_nilai_subsidi')) }}</td>
                                 <td>
@@ -92,6 +94,7 @@
                         <div class="modal-body">
                             <!-- Tampilkan detail alokasi pupuk -->
                             <p><strong>Nama Penanggung Jawab:</strong> {{ $alokasi->nama_penanggung_jawab }}</p>
+                            <p><strong>Jabatan Penanggung Jawab:</strong> {{ $alokasi->jabatan_penanggung_jawab }}</p>
                             <p><strong>Musim Tanam Ke:</strong> {{ $alokasi->musim_tanam }}</p>
 
                             <!-- Tampilkan data list pupuk dalam bentuk tabel -->

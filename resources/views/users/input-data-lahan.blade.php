@@ -82,9 +82,9 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="pemilik_lahan">Pemilik Lahan</label>
-                                        <input type="text" id="pemilik_lahan" name="pemilik_lahan"
-                                            value="{{ old('pemilik_lahan') }}"
-                                            class="form-control @error('pemilik_lahan') is-invalid @enderror">
+                                        <input type="text" id="pemilik_lahan" name="pemilik_lahan" class="form-control @error('pemilik_lahan') is-invalid @enderror"
+                                            autocomplete="off">
+                                        <div id="autocomplete-list" class="autocomplete-items"></div>
                                         @error('pemilik_lahan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -161,6 +161,28 @@
             max-width: 100%;
             max-height: 100%;
         }
+
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #ddd;
+            border-top: none;
+            z-index: 99;
+            background-color: #fff;
+        }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+
+        .autocomplete-active {
+            background-color: #e9e9e9;
+            color: #000;
+        }
     </style>
 @endpush
 
@@ -173,6 +195,48 @@
             // Hanya izinkan angka, koma, dan satu titik koma
             input.value = input.value.replace(/[^0-9,]/g, '');
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('pemilik_lahan');
+            const autocompleteList = document.getElementById('autocomplete-list');
+
+            // Sample data (replace this with actual data from your backend)
+            const names = @json($nama_pemilik);
+
+            input.addEventListener('input', function() {
+                const query = this.value;
+                autocompleteList.innerHTML = ''; // Clear previous suggestions
+                if (query) {
+                    const filteredNames = names.filter(name => name.toLowerCase().includes(query
+                        .toLowerCase()));
+                    filteredNames.forEach(name => {
+                        const item = document.createElement('div');
+                        item.innerHTML = name;
+                        item.addEventListener('click', () => {
+                            input.value = name;
+                            autocompleteList.innerHTML =
+                            ''; // Clear suggestions after selection
+                        });
+                        autocompleteList.appendChild(item);
+                    });
+                }
+            });
+
+            // Close the autocomplete list if the user clicks outside of it
+            document.addEventListener('click', function(e) {
+                if (e.target !== input) {
+                    autocompleteList.innerHTML = '';
+                }
+            });
+
+            // Allow manual input if the name is not in the list
+            input.addEventListener('blur', function() {
+                if (!names.includes(this.value)) {
+                    // Optional: Add logic to handle new input, e.g., save to database
+                    console.log('New name input: ', this.value);
+                }
+            });
+        });
     </script>
     <script>
         var map = L.map('map').setView([-6.933758333939422, 106.96270033569287], 16);

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LahanController;
 use App\Http\Controllers\ManageUserController;
+use App\Models\Lahan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,7 +36,9 @@ Route::group(['middleware' => 'role:user'], function () {
     Route::get('/user/dashboard', [DashboardController::class, 'index']);
     Route::get('/user/data-lahan', [LahanController::class, 'index']);
     Route::get('/user/add-lahan', function(){
-        return view('users.input-data-lahan');
+        $nama_pemilik = Lahan::pluck('pemilik_lahan')->unique()->toArray();
+
+        return view('users.input-data-lahan', ['nama_pemilik' => $nama_pemilik]);
     });
     Route::post('/submit-data-lahan', [LahanController::class, 'store']);
     Route::get('/user/update-data-lahan/{id}', [LahanController::class, 'edit_lahan']);
