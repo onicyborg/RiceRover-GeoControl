@@ -60,8 +60,6 @@
                             <th>No</th>
                             <th>Penanggung Jawab</th>
                             <th>Musim Tanam Ke</th>
-                            <th>Jenis / Nama Pupuk</th>
-                            <th>Jumlah Alokasi</th>
                             <th>Total Nilai Alokasi</th>
                             <th>Action</th>
                         </tr>
@@ -72,16 +70,8 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $alokasi->nama_penanggung_jawab }}</td>
                                 <td>{{ $alokasi->musim_tanam }}</td>
-                                <td>{{ $alokasi->jenis_pupuk }}</td>
-                                <td>{{ number_format($alokasi->jumlah_pupuk) }} Kg</td>
-                                <td>Rp. {{ number_format($alokasi->total_nilai_subsidi) }}</td>
+                                <td>Rp. {{ number_format($alokasi->list_pupuk->sum('total_nilai_subsidi')) }}</td>
                                 <td>
-                                    <!-- Button Update -->
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                        data-bs-target="#updateModal{{ $alokasi->id }}">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </button>
-
                                     <!-- Button Detail -->
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                         data-bs-target="#detailModal{{ $alokasi->id }}">
@@ -89,161 +79,81 @@
                                     </button>
                                 </td>
                             </tr>
-
-                            <!-- Modal Update -->
-                            <div class="modal fade" id="updateModal{{ $alokasi->id }}" tabindex="-1"
-                                aria-labelledby="updateModalLabel{{ $alokasi->id }}" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="updateModalLabel{{ $alokasi->id }}">Update Alokasi
-                                                Pupuk</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- Form untuk update data, sesuaikan dengan kebutuhan -->
-                                            <form action="/alokasi-pupuk/{{ $alokasi->id }}/update" method="POST"
-                                                enctype="multipart/form-data">
-                                                @csrf
-                                                @method('PUT')
-
-                                                <!-- Nama Penanggung Jawab -->
-                                                <div class="mb-3">
-                                                    <label for="nama_penanggung_jawab{{ $alokasi->id }}"
-                                                        class="form-label">Nama Penanggung Jawab</label>
-                                                    <input type="text" class="form-control"
-                                                        id="nama_penanggung_jawab{{ $alokasi->id }}"
-                                                        name="nama_penanggung_jawab"
-                                                        value="{{ $alokasi->nama_penanggung_jawab }}" required>
-                                                </div>
-
-                                                <!-- Musim Tanam -->
-                                                <div class="mb-3">
-                                                    <label for="musim_tanam{{ $alokasi->id }}" class="form-label">Musim
-                                                        Tanam Ke</label>
-                                                    <input type="number" class="form-control"
-                                                        id="musim_tanam{{ $alokasi->id }}" name="musim_tanam"
-                                                        value="{{ $alokasi->musim_tanam }}" required>
-                                                </div>
-
-                                                <!-- Jenis Pupuk -->
-                                                <div class="mb-3">
-                                                    <label for="jenis_pupuk{{ $alokasi->id }}" class="form-label">Jenis
-                                                        Pupuk</label>
-                                                    <input type="text" class="form-control"
-                                                        id="jenis_pupuk{{ $alokasi->id }}" name="jenis_pupuk"
-                                                        value="{{ $alokasi->jenis_pupuk }}" required>
-                                                </div>
-
-                                                <!-- Jumlah Pupuk -->
-                                                <div class="mb-3">
-                                                    <label for="jumlah_pupuk{{ $alokasi->id }}" class="form-label">Jumlah
-                                                        Pupuk (Kg)</label>
-                                                    <input type="number" class="form-control"
-                                                        id="jumlah_pupuk{{ $alokasi->id }}" name="jumlah_pupuk"
-                                                        value="{{ $alokasi->jumlah_pupuk }}" required>
-                                                </div>
-
-                                                <!-- Harga Pupuk -->
-                                                <div class="mb-3">
-                                                    <label for="harga_pupuk{{ $alokasi->id }}" class="form-label">Harga
-                                                        Pupuk (Rp/Kg)</label>
-                                                    <input type="number" class="form-control"
-                                                        id="harga_pupuk{{ $alokasi->id }}" name="harga_pupuk"
-                                                        value="{{ $alokasi->harga_pupuk }}" required>
-                                                </div>
-
-                                                <!-- Total Nilai Subsidi -->
-                                                <div class="mb-3">
-                                                    <label for="total_nilai_subsidi{{ $alokasi->id }}"
-                                                        class="form-label">Total Nilai Subsidi (Rp)</label>
-                                                    <input type="number" class="form-control"
-                                                        id="total_nilai_subsidi{{ $alokasi->id }}"
-                                                        name="total_nilai_subsidi"
-                                                        value="{{ $alokasi->total_nilai_subsidi }}" readonly>
-                                                </div>
-
-                                                <!-- Foto Bukti Distribusi -->
-                                                <div class="mb-3">
-                                                    <label for="foto_bukti{{ $alokasi->id }}" class="form-label">Foto
-                                                        Bukti Distribusi</label>
-                                                    <input type="file" class="form-control"
-                                                        id="foto_bukti{{ $alokasi->id }}" name="foto_bukti">
-                                                    <small class="form-text text-muted">*Kosongkan jika tidak ingin mengubah
-                                                        gambar.</small><br>
-                                                    <a href="{{ Storage::url('uploads/' . $alokasi->foto_bukti_distribusi) }}"
-                                                        target="_blank">Lihat gambar saat ini</a>
-                                                </div>
-
-                                                <!-- Foto Tanda Tangan -->
-                                                <div class="mb-3">
-                                                    <label for="foto_ttd{{ $alokasi->id }}" class="form-label">Foto
-                                                        Tanda Tangan</label>
-                                                    <input type="file" class="form-control"
-                                                        id="foto_ttd{{ $alokasi->id }}" name="foto_ttd">
-                                                    <small class="form-text text-muted">*Kosongkan jika tidak ingin mengubah
-                                                        gambar.</small><br>
-                                                    <a href="{{ Storage::url('uploads/' . $alokasi->foto_tanda_tangan) }}"
-                                                        target="_blank">Lihat gambar saat ini</a>
-                                                </div>
-
-                                                <script>
-                                                    document.addEventListener('DOMContentLoaded', function() {
-                                                        const alokasiId = '{{ $alokasi->id }}'; // Ganti dengan ID yang sesuai
-                                                        setupUpdateFormListeners(alokasiId);
-                                                    });
-                                                </script>
-
-                                                <!-- Tombol Submit -->
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Update</button>
-                                                </div>
-                                            </form>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Modal Detail -->
-                            <div class="modal fade" id="detailModal{{ $alokasi->id }}" tabindex="-1"
-                                aria-labelledby="detailModalLabel{{ $alokasi->id }}" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="detailModalLabel{{ $alokasi->id }}">Detail Alokasi Pupuk</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- Tampilkan detail alokasi pupuk -->
-                                            <p><strong>Nama Penanggung Jawab:</strong> {{ $alokasi->nama_penanggung_jawab }}</p>
-                                            <p><strong>Musim Tanam Ke:</strong> {{ $alokasi->musim_tanam }}</p>
-                                            <p><strong>Jenis Pupuk:</strong> {{ $alokasi->jenis_pupuk }}</p>
-                                            <p><strong>Jumlah Pupuk:</strong> {{ number_format($alokasi->jumlah_pupuk) }} Kg</p>
-                                            <p><strong>Total Nilai Subsidi:</strong> Rp. {{ number_format($alokasi->total_nilai_subsidi) }}</p>
-
-                                            <!-- Tambahkan gambar bukti distribusi -->
-                                            <p><strong>Foto Bukti Distribusi:</strong></p>
-                                            <img src="{{ Storage::url('uploads/' . $alokasi->foto_bukti_distribusi) }}" alt="Foto Bukti Distribusi" class="img-fluid mb-3">
-
-                                            <!-- Tambahkan gambar tanda tangan -->
-                                            <p><strong>Foto Tanda Tangan:</strong></p>
-                                            <img src="{{ Storage::url('uploads/' . $alokasi->foto_tanda_tangan) }}" alt="Foto Tanda Tangan" class="img-fluid mb-3">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
+        @foreach ($lahan->alokasi_pupuk as $index => $alokasi)
+            <!-- Modal Detail -->
+            <div class="modal fade" id="detailModal{{ $alokasi->id }}" tabindex="-1"
+                aria-labelledby="detailModalLabel{{ $alokasi->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="detailModalLabel{{ $alokasi->id }}">Detail Alokasi Pupuk</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Tampilkan detail alokasi pupuk -->
+                            <p><strong>Nama Penanggung Jawab:</strong> {{ $alokasi->nama_penanggung_jawab }}</p>
+                            <p><strong>Musim Tanam Ke:</strong> {{ $alokasi->musim_tanam }}</p>
+
+                            <!-- Tampilkan data list pupuk dalam bentuk tabel -->
+                            <h6>List Pupuk:</h6>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Jenis Pupuk</th>
+                                        <th>Jumlah Pupuk (Kg)</th>
+                                        <th>Harga Pupuk (Rp/Kg)</th>
+                                        <th>Total Nilai Subsidi (Rp)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $totalNilaiSubsidi = 0;
+                                    @endphp
+                                    @foreach ($alokasi->list_pupuk as $list)
+                                        <tr>
+                                            <td>{{ $list->jenis_pupuk }}</td>
+                                            <td>{{ number_format($list->jumlah_alokasi) }}</td>
+                                            <td>Rp. {{ number_format($list->harga_pupuk) }}</td>
+                                            <td>Rp. {{ number_format($list->total_nilai_subsidi) }}</td>
+                                        </tr>
+                                        @php
+                                            $totalNilaiSubsidi += $list->total_nilai_subsidi;
+                                        @endphp
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Rp. {{ number_format($totalNilaiSubsidi) }}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+
+                            <!-- Tambahkan gambar bukti distribusi -->
+                            <p><strong>Foto Bukti Distribusi:</strong></p>
+                            <img src="{{ Storage::url('uploads/' . $alokasi->foto_bukti_distribusi) }}"
+                                alt="Foto Bukti Distribusi" class="img-fluid mb-3">
+
+                            <!-- Tambahkan gambar tanda tangan -->
+                            <p><strong>Foto Tanda Tangan:</strong></p>
+                            <img src="{{ Storage::url('uploads/' . $alokasi->foto_tanda_tangan) }}" alt="Foto Tanda Tangan"
+                                class="img-fluid mb-3">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
 
         <div class="card">
             <div class="card-header">
@@ -258,7 +168,7 @@
     <!-- Modal Tambah Alokasi Pupuk -->
     <div class="modal fade" id="tambahAlokasiModal" tabindex="-1" aria-labelledby="tambahAlokasiModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form action="/alokasi-pupuk/store/{{ $id }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -269,29 +179,22 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="penanggung_jawab" class="form-label">Nama Penanggung Jawab</label>
-                            <input type="text" class="form-control" id="penanggung_jawab"
-                                name="nama_penanggung_jawab" required>
+                            <input type="text" class="form-control" id="penanggung_jawab" name="nama_penanggung_jawab"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jabatan_penanggung_jawab" class="form-label">Jabatan Penanggung Jawab</label>
+                            <select class="form-control" id="jabatan_penanggung_jawab" name="jabatan_penanggung_jawab"
+                                required>
+                                <option selected disabled>- Pilih Jabatan -</option>
+                                <option value="staff pemerintahan">Staff Pemerintahan</option>
+                                <option value="kelompok tani">Kelompok Tani</option>
+                                <option value="penanggung jawab lapangan">Penanggung Jawab Lapangan</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="musim_tanam" class="form-label">Musim Tanam Ke</label>
                             <input type="number" class="form-control" id="musim_tanam" name="musim_tanam" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="jenis_pupuk" class="form-label">Jenis Pupuk</label>
-                            <input type="text" class="form-control" id="jenis_pupuk" name="jenis_pupuk" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="jumlah_pupuk" class="form-label">Jumlah Pupuk (Kg)</label>
-                            <input type="number" class="form-control jumlah-pupuk" name="jumlah_pupuk" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="harga_pupuk" class="form-label">Harga Pupuk (Rp/Kg)</label>
-                            <input type="number" class="form-control harga-pupuk" name="harga_pupuk" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="total_nilai_subsidi" class="form-label">Total Nilai Subsidi (Rp)</label>
-                            <input type="number" class="form-control total-nilai-subsidi" name="total_nilai_subsidi"
-                                readonly>
                         </div>
                         <div class="mb-3">
                             <label for="foto_bukti" class="form-label">Foto Bukti Distribusi</label>
@@ -301,9 +204,53 @@
                             <label for="foto_ttd" class="form-label">Foto Tanda Tangan</label>
                             <input type="file" class="form-control" id="foto_ttd" name="foto_ttd" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="pupuk_alokasi" class="form-label">Alokasi Pupuk</label>
+                            <table class="table" id="pupuk-table">
+                                <thead>
+                                    <tr>
+                                        <th>Jenis Pupuk</th>
+                                        <th>Jumlah Pupuk (Kg)</th>
+                                        <th>Harga Pupuk (Rp/Kg)</th>
+                                        <th>Total Nilai Subsidi (Rp)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control jenis-pupuk" name="jenis_pupuk[]" required>
+                                                <option value="">Pilih Jenis Pupuk</option>
+                                                <option value="urea">Urea</option>
+                                                <option value="npk">NPK</option>
+                                                <option value="kcl">KCL</option>
+                                                <option value="sp36">SP36</option>
+                                                <option value="poska">Poska</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control jumlah-pupuk" name="jumlah_pupuk[]"
+                                                readonly>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control harga-pupuk" name="harga_pupuk[]"
+                                                readonly>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control total-nilai-subsidi"
+                                                name="total_nilai_subsidi[]" readonly>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger remove-row">Hapus</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary" id="add-row">Tambah Baris</button>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
@@ -329,43 +276,69 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="{{ asset('assets/vendors/simple-datatables/simple-datatables.js') }}"></script>
     <script src="{{ asset('assets/vendors/leaflet/leaflet.js') }}"></script>
+    <script src="{{ asset('geojson/leaflet.ajax.js') }}"></script>
     <script>
         // Simple Datatable
         let table1 = document.querySelector('#table1');
         let dataTable = new simpleDatatables.DataTable(table1);
 
         // Leaflet Map
-        var map = L.map('map').setView([{{ $lahan->denah_lahan }}], 13);
+        var map = L.map('map');
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        @if ($lahan->denah_lahan)
-            var coords = '{{ $lahan->denah_lahan }}'.split(', ');
-            var marker = L.marker([parseFloat(coords[0]), parseFloat(coords[1])]).addTo(map)
-                .bindPopup(`
-        <div style="width: 300px;">
-            <h4>{{ $lahan->nama_lahan }}</h4>
-            <p><b>Penggarap Lahan:</b> {{ $lahan->user->name }}</p>
-            <p><b>Nama Kelompok Tani:</b> {{ $lahan->nama_kelompok_tani }}</p>
-            <p><b>Nomor Kartu Tani:</b> {{ $lahan->nomor_kartu_tani ? $lahan->nomor_kartu_tani : '-' }}</p>
-            <p><b>Luas Lahan:</b> {{ $lahan->luas_lahan }} M2</p>
-            <p><b>Isi Lahan:</b> {{ $lahan->isi_lahan }}</p>
-            <p><b>Pemilik Lahan:</b> {{ $lahan->pemilik_lahan }}</p>
-            <p><b>Alamat Lahan:</b> {{ $lahan->alamat_lahan }}</p>
-            <p><b>Hasil Panen:</b> {{ $lahan->hasil_tanam }} Kg</p>
-            <p><b>Awal Tanam:</b> {{ $lahan->awal_tanam }}</p>
-            <p><b>Akhir Tanam:</b> {{ $lahan->akhir_tanam }}</p>
-            <p><b>Gambar:</b></p>
-            <img src="{{ asset('/storage/uploads/' . $lahan->gambar) }}" alt="Gambar Lahan" style="width: 100%; height: auto;">
-        </div>
-    `, {
-                    maxWidth: "auto"
-                });
+        // Array to store all bounds
+        var allBounds = [];
 
-            map.setView([parseFloat(coords[0]), parseFloat(coords[1])], 15);
+        @if ($lahan->denah_lahan)
+            var geojsonData = {
+                "type": "Feature",
+                "geometry": {
+                    "type": "MultiPolygon",
+                    "coordinates": {!! $lahan->denah_lahan !!}
+                },
+                "properties": {
+                    "name": "{{ $lahan->nama_lahan }}"
+                }
+            };
+
+            // Add GeoJSON layer and get its bounds
+            var geoJsonLayer = L.geoJSON(geojsonData).addTo(map).bindPopup(`
+                    <div style="width: 300px;">
+                        <h4>{{ $lahan->nama_lahan }}</h4>
+                        <p><b>Nama Kelompok Tani:</b> {{ $lahan->nama_kelompok_tani }}</p>
+                        <p><b>Nomor Kartu Tani:</b> {{ $lahan->nomor_kartu_tani ? $lahan->nomor_kartu_tani : '-' }}</p>
+                        <p><b>Luas Lahan:</b> {{ $lahan->luas_lahan }} M2</p>
+                        <p><b>Isi Lahan:</b> {{ $lahan->isi_lahan }}</p>
+                        <p><b>Pemilik Lahan:</b> {{ $lahan->pemilik_lahan }}</p>
+                        <p><b>Alamat Lahan:</b> {{ $lahan->alamat_lahan }}</p>
+                        <p><b>Hasil Panen:</b> {{ $lahan->hasil_panen }} Kg</p>
+                        <p><b>Awal Tanam:</b> {{ $lahan->awal_tanam }}</p>
+                        <p><b>Akhir Tanam:</b> {{ $lahan->akhir_tanam }}</p>
+                        <p><b>Gambar:</b></p>
+                        <img src="{{ asset('/storage/uploads/' . $lahan->gambar) }}" alt="Gambar Lahan" style="width: 100%; height: auto;">
+                    </div>
+                `);
+            allBounds.push(geoJsonLayer.getBounds());
         @endif
+
+        // Fit the map to show all bounds
+        if (allBounds.length > 0) {
+            if (allBounds.length === 1) {
+                map.fitBounds(allBounds[0]);
+            } else {
+                var combinedBounds = allBounds[0];
+                for (var i = 1; i < allBounds.length; i++) {
+                    combinedBounds.extend(allBounds[i]);
+                }
+                map.fitBounds(combinedBounds);
+            }
+        } else {
+            // Set default view if no geometries are present
+            map.setView([-6.927806803218691, 106.93018482302313], 13);
+        }
 
 
         @if (session('success'))
@@ -417,5 +390,98 @@
             jumlahInput.addEventListener('input', calculateTotalSubsidi);
             hargaInput.addEventListener('input', calculateTotalSubsidi);
         }
+    </script>
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan!',
+                html: `
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            `,
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pupukPerM2 = {
+                'padi': {
+                    'urea': 0.025,
+                    'npk': 0.03,
+                    'kcl': 0.0075,
+                    'sp36': 0.015,
+                    'poska': 0.025
+                },
+                'cabai': {
+                    'urea': 0.02,
+                    'npk': 0.03,
+                    'kcl': 0.01,
+                    'sp36': 0.015,
+                    'poska': 0
+                },
+                'jagung': {
+                    'urea': 0.03,
+                    'npk': 0.02,
+                    'kcl': 0.0075,
+                    'sp36': 0.01,
+                    'poska': 0
+                }
+            };
+
+            const hargaPupuk = {
+                'urea': 2250,
+                'npk': 2300,
+                'kcl': 2300,
+                'sp36': 2400,
+                'poska': 2300
+            };
+
+            function updatePupukRow(row) {
+                const jenisPupuk = row.querySelector('.jenis-pupuk').value;
+                const jumlahPupuk = row.querySelector('.jumlah-pupuk');
+                const hargaPupukField = row.querySelector('.harga-pupuk');
+                const totalNilaiSubsidi = row.querySelector('.total-nilai-subsidi');
+                const luasLahan = parseFloat('{{ $lahan->luas_lahan }}');
+                const isiLahan = '{{ $lahan->isi_lahan }}';
+
+                if (jenisPupuk && luasLahan && isiLahan) {
+                    const pupukPerM2ForLahan = pupukPerM2[isiLahan] || {};
+                    const jumlah = luasLahan * (pupukPerM2ForLahan[jenisPupuk] || 0);
+                    jumlahPupuk.value = jumlah.toFixed(2);
+                    hargaPupukField.value = hargaPupuk[jenisPupuk] || 0;
+                    totalNilaiSubsidi.value = (jumlah * (hargaPupuk[jenisPupuk] || 0)).toFixed(2);
+                }
+            }
+
+            document.querySelector('#add-row').addEventListener('click', function() {
+                const row = document.querySelector('#pupuk-table tbody tr');
+                const clone = row.cloneNode(true);
+                row.parentNode.appendChild(clone);
+                clone.querySelector('.jenis-pupuk').value = '';
+                clone.querySelector('.jumlah-pupuk').value = '';
+                clone.querySelector('.harga-pupuk').value = '';
+                clone.querySelector('.total-nilai-subsidi').value = '';
+            });
+
+            document.querySelector('#pupuk-table').addEventListener('change', function(e) {
+                if (e.target.matches('.jenis-pupuk')) {
+                    updatePupukRow(e.target.closest('tr'));
+                }
+            });
+
+            document.querySelector('#pupuk-table').addEventListener('click', function(e) {
+                if (e.target.matches('.remove-row')) {
+                    e.target.closest('tr').remove();
+                }
+            });
+
+            // Initial calculation
+            updatePupukRow(document.querySelector('#pupuk-table tbody tr'));
+        });
     </script>
 @endpush

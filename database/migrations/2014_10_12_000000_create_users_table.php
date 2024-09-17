@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->text('alamat');
+            $table->string('nama_kelompok_tani')->nullable();
+            $table->string('nomor_kartu_tani')->nullable();
             $table->string('avatar')->nullable();
             $table->enum('role', ['admin', 'user']);
             $table->rememberToken();

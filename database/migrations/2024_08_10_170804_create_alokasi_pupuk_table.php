@@ -14,11 +14,8 @@ return new class extends Migration
         Schema::create('alokasi_pupuk', function (Blueprint $table) {
             $table->id();
             $table->string('nama_penanggung_jawab');
+            $table->string('jabatan_penanggung_jawab');
             $table->string('musim_tanam');
-            $table->string('jenis_pupuk');
-            $table->integer('jumlah_pupuk');
-            $table->unsignedBigInteger('harga_pupuk');
-            $table->unsignedBigInteger('total_nilai_subsidi');
             $table->text('foto_bukti_distribusi');
             $table->text('foto_tanda_tangan');
             $table->unsignedBigInteger('lahan_id');

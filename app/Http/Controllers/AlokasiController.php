@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AlokasiPupuk;
+use App\Models\ListPupuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,21 +16,20 @@ class AlokasiController extends Controller
         $request->validate([
             'nama_penanggung_jawab' => 'required|string|max:255',
             'musim_tanam' => 'required|integer',
-            'jenis_pupuk' => 'required|string|max:255',
-            'jumlah_pupuk' => 'required|integer',
-            'harga_pupuk' => 'required|integer',
+            'jenis_pupuk' => 'required|array', // Memastikan ini adalah array
+            'jenis_pupuk.*' => 'required|string|max:255',
+            'jumlah_pupuk' => 'required|array',
+            'jumlah_pupuk.*' => 'required|numeric',
+            'harga_pupuk' => 'required|array',
+            'harga_pupuk.*' => 'required|integer',
             'foto_bukti' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'foto_ttd' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
-        // Hitung total nilai subsidi
-        $total_nilai_subsidi = $request->jumlah_pupuk * $request->harga_pupuk;
 
         // Simpan foto bukti distribusi dengan nama UUID
         if ($request->hasFile('foto_bukti')) {
             $fotoBukti = $request->file('foto_bukti');
             $fotoBuktiName = Str::uuid() . '.' . $fotoBukti->getClientOriginalExtension();
-            // Storage::putFileAs('uploads', $fotoBukti, $fotoBuktiName);
             $fotoBukti->storeAs('uploads', $fotoBuktiName, 'public');
         }
 
@@ -37,24 +37,35 @@ class AlokasiController extends Controller
         if ($request->hasFile('foto_ttd')) {
             $fotoTTD = $request->file('foto_ttd');
             $fotoTTDName = Str::uuid() . '.' . $fotoTTD->getClientOriginalExtension();
-            // Storage::putFileAs('uploads', $fotoTTD, $fotoTTDName);
             $fotoTTD->storeAs('uploads', $fotoTTDName, 'public');
         }
 
-        $data = new AlokasiPupuk();
-        $data->nama_penanggung_jawab = $request->nama_penanggung_jawab;
-        $data->musim_tanam = $request->musim_tanam;
-        $data->jenis_pupuk = $request->jenis_pupuk;
-        $data->jumlah_pupuk = $request->jumlah_pupuk;
-        $data->harga_pupuk = $request->harga_pupuk;
-        $data->total_nilai_subsidi = $total_nilai_subsidi;
-        $data->foto_bukti_distribusi = $fotoBuktiName;
-        $data->foto_tanda_tangan = $fotoTTDName;
-        $data->lahan_id = $id;
-        $data->save();
+        // Simpan data alokasi pupuk
+        $alokasiPupuk = new AlokasiPupuk();
+        $alokasiPupuk->nama_penanggung_jawab = $request->nama_penanggung_jawab;
+        $alokasiPupuk->jabatan_penanggung_jawab = $request->jabatan_penanggung_jawab;
+        $alokasiPupuk->musim_tanam = $request->musim_tanam;
+        $alokasiPupuk->foto_bukti_distribusi = $fotoBuktiName;
+        $alokasiPupuk->foto_tanda_tangan = $fotoTTDName;
+        $alokasiPupuk->lahan_id = $id;
+        $alokasiPupuk->save();
+
+        // dd($request->jenis_pupuk);
+
+        // Simpan data list pupuk ke dalam tabel `list_pupuk`
+        foreach ($request->jenis_pupuk as $index => $jenis) {
+            $listPupuk = new ListPupuk();
+            $listPupuk->jenis_pupuk = $jenis; // Akses jenis pupuk dari request
+            $listPupuk->jumlah_alokasi = $request->jumlah_pupuk[$index]; // Akses jumlah pupuk dari array request
+            $listPupuk->harga_pupuk = $request->harga_pupuk[$index]; // Akses harga pupuk dari array request
+            $listPupuk->total_nilai_subsidi = $request->jumlah_pupuk[$index] * $request->harga_pupuk[$index];
+            $listPupuk->alokasi_id = $alokasiPupuk->id;
+            $listPupuk->save();
+        }
 
         return redirect()->back()->with('success', 'Alokasi pupuk berhasil ditambahkan');
     }
+
 
     public function update(Request $request, $id)
     {

@@ -23,6 +23,8 @@ class DataSeeder extends Seeder
                 'alamat' => 'Jl. Contoh No. 1, Jakarta',
                 'avatar' => null, // Bisa ditambahkan path gambar avatar jika ada
                 'role' => 'admin',
+                'nama_kelompok_tani' => null,
+                'nomor_kartu_tani' => null,
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -34,6 +36,8 @@ class DataSeeder extends Seeder
                 'alamat' => 'Jl. Contoh No. 2, Bandung',
                 'avatar' => null, // Bisa ditambahkan path gambar avatar jika ada
                 'role' => 'user',
+                'nama_kelompok_tani' => 'kelompok tani 1',
+                'nomor_kartu_tani' => '123123123',
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),

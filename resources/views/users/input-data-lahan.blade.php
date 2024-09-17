@@ -26,11 +26,6 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div id="map" style="width: 600px; height: 400px;"></div>
-                                <div class="form-check form-switch mt-3">
-                                    <input class="form-check-input" type="checkbox" id="use_current_location">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Pilih lokasi saat
-                                        ini</label>
-                                </div>
                             </div>
                             <div class="col-md-6">
                                 <form action="/submit-data-lahan" method="POST" enctype="multipart/form-data">
@@ -38,17 +33,12 @@
                                     <div class="form-group">
                                         <label for="nama_kelompok_tani">Nama Petani / Kelompok Tani</label>
                                         <input type="text" id="nama_kelompok_tani" name="nama_kelompok_tani"
-                                            value="{{ old('nama_kelompok_tani') }}"
-                                            class="form-control @error('nama_kelompok_tani') is-invalid @enderror">
-                                        @error('nama_kelompok_tani')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                            value="{{ Auth::user()->nama_kelompok_tani }}" class="form-control" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="nomor_kartu_tani">Nomor Kartu Tani (Jika Ada)</label>
                                         <input type="number" id="nomor_kartu_tani" name="nomor_kartu_tani"
-                                            value="{{ old('nomor_kartu_tani') }}"
-                                            class="form-control @error('nomor_kartu_tani') is-invalid @enderror">
+                                            value="{{ Auth::user()->nomor_kartu_tani }}" class="form-control" readonly>
                                         @error('nomor_kartu_tani')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -64,17 +54,28 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="luas_lahan">Luas Lahan (M2)</label>
-                                        <input type="number" id="luas_lahan" name="luas_lahan"
+                                        <input type="text" id="luas_lahan" name="luas_lahan"
                                             value="{{ old('luas_lahan') }}"
-                                            class="form-control @error('luas_lahan') is-invalid @enderror">
+                                            class="form-control @error('luas_lahan') is-invalid @enderror"
+                                            oninput="validateInput(this)">
                                         @error('luas_lahan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="isi_lahan">Isi Lahan</label>
-                                        <input type="text" id="isi_lahan" name="isi_lahan" value="{{ old('isi_lahan') }}"
+                                        <select id="isi_lahan" name="isi_lahan"
                                             class="form-control @error('isi_lahan') is-invalid @enderror">
+                                            <option {{ old('isi_lahan') == null ? 'selected' : '' }} disabled>Pilih Isi
+                                                Lahan</option>
+                                            <option value="padi" {{ old('isi_lahan') == 'padi' ? 'selected' : '' }}>Padi
+                                            </option>
+                                            <option value="jagung" {{ old('isi_lahan') == 'jagung' ? 'selected' : '' }}>
+                                                Jagung</option>
+                                            <option value="cabai" {{ old('isi_lahan') == 'cabai' ? 'selected' : '' }}>
+                                                Cabai
+                                            </option>
+                                        </select>
                                         @error('isi_lahan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -166,43 +167,42 @@
 @push('scripts')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="{{ asset('geojson/leaflet.ajax.js') }}"></script>
     <script>
-        var map = L.map('map').setView([-6.927806803218691, 106.93018482302313], 13);
+        function validateInput(input) {
+            // Hanya izinkan angka, koma, dan satu titik koma
+            input.value = input.value.replace(/[^0-9,]/g, '');
+        }
+    </script>
+    <script>
+        var map = L.map('map').setView([-6.933758333939422, 106.96270033569287], 16);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        var marker;
-
-        function onMapClick(e) {
-            if (marker) {
-                map.removeLayer(marker);
+        function popUp(f, l) {
+            var out = [];
+            if (f.properties) {
+                for (key in f.properties) {
+                    out.push(key + ": " + f.properties[key]);
+                }
+                l.bindPopup(out.join("<br />"));
             }
-            marker = L.marker(e.latlng).addTo(map);
-            document.getElementById('denah_lahan').value = e.latlng.lat + ", " + e.latlng.lng;
+
+            // Tambahkan event listener untuk klik pada polygon
+            l.on('click', function() {
+                // Mengisi field form dengan data dari geojson
+                document.getElementById('luas_lahan').value = f.properties.LUASPETA;
+                document.getElementById('pemilik_lahan').value = f.properties.Pemilik;
+
+                // Format koordinat multipolygon untuk denah lahan
+                document.getElementById('denah_lahan').value = JSON.stringify(f.geometry.coordinates);
+            });
         }
 
-        map.on('click', onMapClick);
-
-        document.getElementById('use_current_location').addEventListener('change', function() {
-            if (this.checked) {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        var lat = position.coords.latitude;
-                        var lng = position.coords.longitude;
-                        var latlng = L.latLng(lat, lng);
-                        map.setView(latlng, 13);
-                        if (marker) {
-                            map.removeLayer(marker);
-                        }
-                        marker = L.marker(latlng).addTo(map);
-                        document.getElementById('denah_lahan').value = lat + ", " + lng;
-                    });
-                } else {
-                    alert("Geolocation is not supported by this browser.");
-                }
-            }
-        });
+        var jsonTest = new L.GeoJSON.AJAX(["{{ asset('geojson/data2.geojson') }}"], {
+            onEachFeature: popUp
+        }).addTo(map);
     </script>
 @endpush

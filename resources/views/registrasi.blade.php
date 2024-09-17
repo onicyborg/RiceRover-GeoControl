@@ -86,7 +86,7 @@
                             </div>
                             <div class="mb-3 form-password-toggle">
                                 <div class="d-flex justify-content-between">
-                                    <label class="form-label" for="password_confirmation">Password</label>
+                                    <label class="form-label" for="password_confirmation">Password Confirmation</label>
                                 </div>
                                 <div class="input-group input-group-merge">
                                     <input type="password" id="password_confirmation"
@@ -105,6 +105,28 @@
                                     placeholder="Enter Your Address" rows="3">{{ old('alamat') }}</textarea>
                                 @error('alamat')
                                     <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="nama_kelompok_tani" class="form-label">Nama Kelompok Tani</label>
+                                <input type="text" class="form-control @error('nama_kelompok_tani') is-invalid @enderror"
+                                    id="nama_kelompok_tani" name="nama_kelompok_tani" value="{{ old('nama_kelompok_tani') }}"
+                                    placeholder="Enter Your Group Name" autofocus>
+                                @error('nama_kelompok_tani')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="nomor_kartu_tani" class="form-label">Nomor Kartu Tani</label>
+                                <input type="text" class="form-control @error('nomor_kartu_tani') is-invalid @enderror"
+                                    id="nomor_kartu_tani" name="nomor_kartu_tani" value="{{ old('nomor_kartu_tani') }}"
+                                    placeholder="Enter Your Number Card" autofocus>
+                                @error('nomor_kartu_tani')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                 @enderror
                             </div>
                             <button class="btn btn-success d-grid w-100">Sign up</button>

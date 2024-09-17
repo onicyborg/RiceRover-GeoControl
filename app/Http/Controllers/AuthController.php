@@ -16,6 +16,8 @@ class AuthController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'alamat' => 'required|string|max:500',
+            'nama_kelompok_tani' => 'required|string|max:500',
+            'nomor_kartu_tani' => 'required|numeric',
         ], [
             'name.required' => 'Nama wajib diisi.',
             'username.required' => 'Username wajib diisi.',
@@ -24,6 +26,9 @@ class AuthController extends Controller
             'password.min' => 'Kata sandi minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi kata sandi tidak sesuai.',
             'alamat.required' => 'Alamat wajib diisi.',
+            'nama_kelompok_tani.required' => 'Nama Kelompok Tani Wajib Diisi',
+            'nomor_kartu_tani.required' => 'Nomor Kartu Tani Wajib Diisi',
+            'nomor_kartu_tani.numeric' => 'Nomor Kartu Tani Harus Angka'
         ]);
 
         User::create([
@@ -31,7 +36,9 @@ class AuthController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'alamat' => $request->alamat,
-            'role' => 'user'
+            'role' => 'user',
+            'nama_kelompok_tani' => $request->nama_kelompok_tani,
+            'nomor_kartu_tani' => $request->nomor_kartu_tani
         ]);
 
         // Redirect ke halaman login dengan pesan sukses
