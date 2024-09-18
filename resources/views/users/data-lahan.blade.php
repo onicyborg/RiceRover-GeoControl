@@ -146,7 +146,7 @@
 
         // Loop through lahan data and add polygons
         @foreach ($lahans as $lahan)
-            @if ($lahan->denah_lahan)
+            @if ($lahan->denah_lahan && $lahan->status == 'berjalan')
                 var geojsonData = {
                     "type": "Feature",
                     "geometry": {

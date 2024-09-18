@@ -184,6 +184,7 @@
                             <label for="penanggung_jawab" class="form-label">Nama Penanggung Jawab</label>
                             <input type="text" class="form-control" id="penanggung_jawab" name="nama_penanggung_jawab"
                                 required>
+                            <div id="autocomplete-list" class="autocomplete-items"></div>
                         </div>
                         <div class="mb-3">
                             <label for="jabatan_penanggung_jawab" class="form-label">Jabatan Penanggung Jawab</label>
@@ -272,6 +273,28 @@
             max-width: 100%;
             max-height: 100%;
         }
+
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #ddd;
+            border-top: none;
+            z-index: 99;
+            background-color: #fff;
+        }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+
+        .autocomplete-active {
+            background-color: #e9e9e9;
+            color: #000;
+        }
     </style>
 @endpush
 
@@ -281,6 +304,48 @@
     <script src="{{ asset('assets/vendors/leaflet/leaflet.js') }}"></script>
     <script src="{{ asset('geojson/leaflet.ajax.js') }}"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('penanggung_jawab');
+            const autocompleteList = document.getElementById('autocomplete-list');
+
+            // Sample data (replace this with actual data from your backend)
+            const names = @json($nama_penanggung_jawab);
+
+            input.addEventListener('input', function() {
+                const query = this.value;
+                autocompleteList.innerHTML = ''; // Clear previous suggestions
+                if (query) {
+                    const filteredNames = names.filter(name => name.toLowerCase().includes(query
+                        .toLowerCase()));
+                    filteredNames.forEach(name => {
+                        const item = document.createElement('div');
+                        item.innerHTML = name;
+                        item.addEventListener('click', () => {
+                            input.value = name;
+                            autocompleteList.innerHTML =
+                            ''; // Clear suggestions after selection
+                        });
+                        autocompleteList.appendChild(item);
+                    });
+                }
+            });
+
+            // Close the autocomplete list if the user clicks outside of it
+            document.addEventListener('click', function(e) {
+                if (e.target !== input) {
+                    autocompleteList.innerHTML = '';
+                }
+            });
+
+            // Allow manual input if the name is not in the list
+            input.addEventListener('blur', function() {
+                if (!names.includes(this.value)) {
+                    // Optional: Add logic to handle new input, e.g., save to database
+                    console.log('New name input: ', this.value);
+                }
+            });
+        });
+
         // Simple Datatable
         let table1 = document.querySelector('#table1');
         let dataTable = new simpleDatatables.DataTable(table1);

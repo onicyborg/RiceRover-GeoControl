@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlokasiPupuk;
 use App\Models\Lahan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -137,9 +138,10 @@ class LahanController extends Controller
     public function detail_lahan($id)
     {
         $lahan = Lahan::find($id);
+        $nama_penanggung_jawab = AlokasiPupuk::pluck('nama_penanggung_jawab')->unique()->toArray();
 
         if(Auth::user()->role == 'admin'){
-            return view('admin.alokasi-lahan', ['lahan' => $lahan, 'id' => $id]);
+            return view('admin.alokasi-lahan', ['lahan' => $lahan, 'id' => $id, 'nama_penanggung_jawab' => $nama_penanggung_jawab]);
         }else{
             return view('users.alokasi-lahan', ['lahan' => $lahan, 'id' => $id]);
         }
