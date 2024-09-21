@@ -31,6 +31,7 @@ class LahanController extends Controller
             'nomor_kartu_tani' => 'nullable|string|max:255',
             'nama_lahan' => 'required|string|max:255',
             'luas_lahan' => 'required|numeric',
+            'luas_tanam' => 'required|numeric',
             'isi_lahan' => 'required|string|max:255',
             'pemilik_lahan' => 'required|string|max:255',
             'alamat_lahan' => 'required|string|max:255',
@@ -47,6 +48,7 @@ class LahanController extends Controller
         $lahan->nomor_kartu_tani = $request->nomor_kartu_tani;
         $lahan->nama_lahan = $request->nama_lahan;
         $lahan->luas_lahan = $request->luas_lahan;
+        $lahan->luas_tanam = $request->luas_tanam;
         $lahan->isi_lahan = $request->isi_lahan;
         $lahan->pemilik_lahan = $request->pemilik_lahan;
         $lahan->alamat_lahan = $request->alamat_lahan;

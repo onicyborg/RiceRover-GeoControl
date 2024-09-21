@@ -63,6 +63,15 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
+                                        <label for="luas_tanam">Luas Tanam (M2)</label>
+                                        <input type="text" id="luas_tanam" name="luas_tanam"
+                                            value="{{ old('luas_tanam') }}"
+                                            class="form-control @error('luas_tanam') is-invalid @enderror">
+                                        @error('luas_tanam')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <label for="isi_lahan">Isi Lahan</label>
                                         <select id="isi_lahan" name="isi_lahan"
                                             class="form-control @error('isi_lahan') is-invalid @enderror">

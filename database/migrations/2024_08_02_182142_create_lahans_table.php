@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama_kelompok_tani');
             $table->string('nomor_kartu_tani')->nullable();
             $table->string('luas_lahan');
+            $table->string('luas_tanam');
             $table->string('isi_lahan');
             $table->string('pemilik_lahan');
             $table->text('alamat_lahan');

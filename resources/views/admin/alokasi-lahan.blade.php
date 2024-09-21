@@ -26,7 +26,8 @@
                     <div class="col-md-6">
                         <p><strong>Penggarap Lahan:</strong> {{ $lahan->user->name }}</p>
                         <p><strong>Nama Lahan:</strong> {{ $lahan->nama_lahan }}</p>
-                        <p><strong>Luas Lahan:</strong> {{ $lahan->luas_lahan }} M2</p>
+                        <p><strong>Luas Lahan:</strong> {{ $lahan->luas_lahan }} M&sup2;</p>
+                        <p><strong>Luas Tanam:</strong> {{ $lahan->luas_tanam }} M&sup2;</p>
                         <p><strong>Isi Lahan:</strong> {{ $lahan->isi_lahan }}</p>
                         <p><strong>Pemilik Lahan:</strong> {{ $lahan->pemilik_lahan }}</p>
                         <p><strong>Alamat Lahan:</strong> {{ $lahan->alamat_lahan }}</p>
@@ -191,9 +192,9 @@
                             <select class="form-control" id="jabatan_penanggung_jawab" name="jabatan_penanggung_jawab"
                                 required>
                                 <option selected disabled>- Pilih Jabatan -</option>
-                                <option value="staff pemerintahan">Staff Pemerintahan</option>
-                                <option value="kelompok tani">Kelompok Tani</option>
-                                <option value="penanggung jawab lapangan">Penanggung Jawab Lapangan</option>
+                                <option value="Staff Pemerintahan">Staff Pemerintahan</option>
+                                <option value="Kelompok Tani">Kelompok Tani</option>
+                                <option value="Penanggung Jawab Lapangan">Penanggung Jawab Lapangan</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -225,11 +226,11 @@
                                         <td>
                                             <select class="form-control jenis-pupuk" name="jenis_pupuk[]" required>
                                                 <option value="">Pilih Jenis Pupuk</option>
-                                                <option value="urea">Urea</option>
-                                                <option value="npk">NPK</option>
-                                                <option value="kcl">KCL</option>
-                                                <option value="sp36">SP36</option>
-                                                <option value="poska">Poska</option>
+                                                <option value="Urea">Urea</option>
+                                                <option value="NPK">NPK</option>
+                                                <option value="KCL">KCL</option>
+                                                <option value="SP36">SP36</option>
+                                                <option value="Poska">Poska</option>
                                             </select>
                                         </td>
                                         <td>
@@ -378,7 +379,8 @@
                         <h4>{{ $lahan->nama_lahan }}</h4>
                         <p><b>Nama Kelompok Tani:</b> {{ $lahan->nama_kelompok_tani }}</p>
                         <p><b>Nomor Kartu Tani:</b> {{ $lahan->nomor_kartu_tani ? $lahan->nomor_kartu_tani : '-' }}</p>
-                        <p><b>Luas Lahan:</b> {{ $lahan->luas_lahan }} M2</p>
+                        <p><b>Luas Lahan:</b> {{ $lahan->luas_lahan }} M&sup2;</p>
+                        <p><b>Luas Tanam:</b> {{ $lahan->luas_tanam }} M&sup2;</p>
                         <p><b>Isi Lahan:</b> {{ $lahan->isi_lahan }}</p>
                         <p><b>Pemilik Lahan:</b> {{ $lahan->pemilik_lahan }}</p>
                         <p><b>Alamat Lahan:</b> {{ $lahan->alamat_lahan }}</p>
@@ -514,12 +516,12 @@
                 const jumlahPupuk = row.querySelector('.jumlah-pupuk');
                 const hargaPupukField = row.querySelector('.harga-pupuk');
                 const totalNilaiSubsidi = row.querySelector('.total-nilai-subsidi');
-                const luasLahan = parseFloat('{{ $lahan->luas_lahan }}');
+                const luasTanam = parseFloat('{{ $lahan->luas_tanam }}');
                 const isiLahan = '{{ $lahan->isi_lahan }}';
 
-                if (jenisPupuk && luasLahan && isiLahan) {
+                if (jenisPupuk && luasTanam && isiLahan) {
                     const pupukPerM2ForLahan = pupukPerM2[isiLahan] || {};
-                    const jumlah = luasLahan * (pupukPerM2ForLahan[jenisPupuk] || 0);
+                    const jumlah = luasTanam * (pupukPerM2ForLahan[jenisPupuk] || 0);
                     jumlahPupuk.value = jumlah.toFixed(2);
                     hargaPupukField.value = hargaPupuk[jenisPupuk] || 0;
                     totalNilaiSubsidi.value = (jumlah * (hargaPupuk[jenisPupuk] || 0)).toFixed(2);

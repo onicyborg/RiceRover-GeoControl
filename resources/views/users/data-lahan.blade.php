@@ -29,6 +29,7 @@
                             <th>No</th>
                             <th>Nama Lahan</th>
                             <th>Luas Lahan</th>
+                            <th>Luas Tanam</th>
                             <th>Isi Lahan</th>
                             <th>Pemilik Lahan</th>
                             <th>Total Hasil Panen</th>
@@ -42,6 +43,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $lahan->nama_lahan }}</td>
                                 <td>{{ $lahan->luas_lahan }} M&sup2;</td>
+                                <td>{{ $lahan->luas_tanam }} M&sup2;</td>
                                 <td>{{ $lahan->isi_lahan }}</td>
                                 <td>{{ $lahan->pemilik_lahan }}</td>
                                 <td>{{ $lahan->hasil_panen }} Kg</td>
@@ -121,6 +123,11 @@
             max-width: 100%;
             max-height: 100%;
         }
+        /* Mengubah warna ikon prev dan next */
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: rgba(50, 44, 44, 0.8);
+        }
     </style>
 @endpush
 
@@ -134,8 +141,8 @@
         let table1 = document.querySelector('#table1');
         let dataTable = new simpleDatatables.DataTable(table1);
 
-        // Leaflet Map
-        var map = L.map('map');
+        // Leaflet Map Initialization
+        var map = L.map('map').setView([-6.927806803218691, 106.93018482302313], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -144,40 +151,107 @@
         // Array to store all bounds
         var allBounds = [];
 
-        // Loop through lahan data and add polygons
+        // Object to store grouped lahan by coordinates
+        var groupedLahans = {};
+
+        // Loop through lahan data and group by coordinates
         @foreach ($lahans as $lahan)
             @if ($lahan->denah_lahan && $lahan->status == 'berjalan')
-                var geojsonData = {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "MultiPolygon",
-                        "coordinates": {!! $lahan->denah_lahan !!}
-                    },
-                    "properties": {
-                        "name": "{{ $lahan->nama_lahan }}"
-                    }
-                };
+                var coordinates = {!! $lahan->denah_lahan !!};
+                var key = JSON.stringify(coordinates); // Use coordinates as the key
 
-                // Add GeoJSON layer and get its bounds
-                var geoJsonLayer = L.geoJSON(geojsonData).addTo(map).bindPopup(`
-                    <div style="width: 300px;">
-                        <h4>{{ $lahan->nama_lahan }}</h4>
-                        <p><b>Nama Kelompok Tani:</b> {{ $lahan->nama_kelompok_tani }}</p>
-                        <p><b>Nomor Kartu Tani:</b> {{ $lahan->nomor_kartu_tani ? $lahan->nomor_kartu_tani : '-' }}</p>
-                        <p><b>Luas Lahan:</b> {{ $lahan->luas_lahan }} M2</p>
-                        <p><b>Isi Lahan:</b> {{ $lahan->isi_lahan }}</p>
-                        <p><b>Pemilik Lahan:</b> {{ $lahan->pemilik_lahan }}</p>
-                        <p><b>Alamat Lahan:</b> {{ $lahan->alamat_lahan }}</p>
-                        <p><b>Hasil Panen:</b> {{ $lahan->hasil_panen }} Kg</p>
-                        <p><b>Awal Tanam:</b> {{ $lahan->awal_tanam }}</p>
-                        <p><b>Akhir Tanam:</b> {{ $lahan->akhir_tanam }}</p>
-                        <p><b>Gambar:</b></p>
-                        <img src="{{ asset('/storage/uploads/' . $lahan->gambar) }}" alt="Gambar Lahan" style="width: 100%; height: auto;">
-                    </div>
-                `);
-                allBounds.push(geoJsonLayer.getBounds());
+                // Group lahan by coordinates
+                if (!groupedLahans[key]) {
+                    groupedLahans[key] = [];
+                }
+
+                groupedLahans[key].push({
+                    "nama_lahan": "{{ $lahan->nama_lahan }}",
+                    "nama_kelompok_tani": "{{ $lahan->nama_kelompok_tani }}",
+                    "nomor_kartu_tani": "{{ $lahan->nomor_kartu_tani ? $lahan->nomor_kartu_tani : '-' }}",
+                    "luas_lahan": "{{ $lahan->luas_lahan }}",
+                    "luas_tanam": "{{ $lahan->luas_tanam }}",
+                    "isi_lahan": "{{ $lahan->isi_lahan }}",
+                    "pemilik_lahan": "{{ $lahan->pemilik_lahan }}",
+                    "alamat_lahan": "{{ $lahan->alamat_lahan }}",
+                    "hasil_panen": "{{ $lahan->hasil_panen }}",
+                    "awal_tanam": "{{ $lahan->awal_tanam }}",
+                    "akhir_tanam": "{{ $lahan->akhir_tanam }}",
+                    "gambar": "{{ asset('/storage/uploads/' . $lahan->gambar) }}"
+                });
             @endif
         @endforeach
+
+        // Function to create carousel content
+        function getCarouselContent(lahanList) {
+            var carouselItems = lahanList.map((lahan, index) => {
+                var isActive = index === 0 ? 'active' : ''; // Set first item as active
+                return `
+                    <div class="carousel-item ${isActive}">
+                        <h4>${lahan.nama_lahan}</h4>
+                        <p><b>Nama Kelompok Tani:</b> ${lahan.nama_kelompok_tani}</p>
+                        <p><b>Nomor Kartu Tani:</b> ${lahan.nomor_kartu_tani}</p>
+                        <p><b>Luas Lahan:</b> ${lahan.luas_lahan} M&sup2;</p>
+                        <p><b>Luas Tanam:</b> ${lahan.luas_tanam} M&sup2;</p>
+                        <p><b>Isi Lahan:</b> ${lahan.isi_lahan}</p>
+                        <p><b>Pemilik Lahan:</b> ${lahan.pemilik_lahan}</p>
+                        <p><b>Alamat Lahan:</b> ${lahan.alamat_lahan}</p>
+                        <p><b>Hasil Panen:</b> ${lahan.hasil_panen} Kg</p>
+                        <p><b>Awal Tanam:</b> ${lahan.awal_tanam}</p>
+                        <p><b>Akhir Tanam:</b> ${lahan.akhir_tanam}</p>
+                        <p><b>Gambar:</b></p>
+                        <img src="${lahan.gambar}" alt="Gambar Lahan" style="width: 100%; height: auto;">
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        ${carouselItems}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                                            data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                                            data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </a>
+                </div>
+            `;
+        }
+
+        var lahanList = [];
+
+        // Loop through groupedLahans and add to map
+        Object.keys(groupedLahans).forEach(function(key) {
+            lahanList = groupedLahans[key];
+            var geojsonData = {
+                "type": "Feature",
+                "geometry": {
+                    "type": "MultiPolygon",
+                    "coordinates": JSON.parse(key)
+                }
+            };
+
+            // Create a layer for each grouped lahan
+            var layerGroup = L.layerGroup();
+            var geoJsonLayer = L.geoJSON(geojsonData).addTo(layerGroup);
+
+            // Bind popup to the lahan group
+            geoJsonLayer.bindPopup(getCarouselContent(lahanList), {
+                maxWidth: 400
+            }); // Use carousel in popup
+
+            // Add layer group to map
+            layerGroup.addTo(map);
+
+            // Store bounds for fitBounds
+            allBounds.push(geoJsonLayer.getBounds());
+        });
 
         // Fit the map to show all bounds
         if (allBounds.length > 0) {
