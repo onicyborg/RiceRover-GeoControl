@@ -481,34 +481,34 @@
         document.addEventListener('DOMContentLoaded', function() {
             const pupukPerM2 = {
                 'padi': {
-                    'urea': 0.025,
-                    'npk': 0.03,
-                    'kcl': 0.0075,
-                    'sp36': 0.015,
-                    'poska': 0.025
+                    'Urea': 0.025,
+                    'NPK': 0.03,
+                    'KCL': 0.0075,
+                    'SP36': 0.015,
+                    'Poska': 0.025
                 },
                 'cabai': {
-                    'urea': 0.02,
-                    'npk': 0.03,
-                    'kcl': 0.01,
-                    'sp36': 0.015,
-                    'poska': 0
+                    'Urea': 0.02,
+                    'NPK': 0.03,
+                    'KCL': 0.01,
+                    'SP36': 0.015,
+                    'Poska': 0
                 },
                 'jagung': {
-                    'urea': 0.03,
-                    'npk': 0.02,
-                    'kcl': 0.0075,
-                    'sp36': 0.01,
-                    'poska': 0
+                    'Urea': 0.03,
+                    'NPK': 0.02,
+                    'KCL': 0.0075,
+                    'SP36': 0.01,
+                    'Poska': 0
                 }
             };
 
             const hargaPupuk = {
-                'urea': 2250,
-                'npk': 2300,
-                'kcl': 2300,
-                'sp36': 2400,
-                'poska': 2300
+                'Urea': 2250,
+                'NPK': 2300,
+                'KCL': 2300,
+                'SP36': 2400,
+                'Poska': 2300
             };
 
             function updatePupukRow(row) {
