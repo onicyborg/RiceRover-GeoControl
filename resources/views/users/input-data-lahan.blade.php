@@ -57,7 +57,7 @@
                                         <input type="text" id="luas_lahan" name="luas_lahan"
                                             value="{{ old('luas_lahan') }}"
                                             class="form-control @error('luas_lahan') is-invalid @enderror"
-                                            oninput="validateInput(this)">
+                                            oninput="validateInput(this)" readonly>
                                         @error('luas_lahan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -91,7 +91,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="pemilik_lahan">Pemilik Lahan</label>
-                                        <input type="text" id="pemilik_lahan" name="pemilik_lahan" class="form-control @error('pemilik_lahan') is-invalid @enderror"
+                                        <input type="text" id="pemilik_lahan" name="pemilik_lahan"
+                                            class="form-control @error('pemilik_lahan') is-invalid @enderror"
                                             autocomplete="off">
                                         <div id="autocomplete-list" class="autocomplete-items"></div>
                                         @error('pemilik_lahan')
@@ -162,6 +163,7 @@
 @endsection
 
 @push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <style>
@@ -196,6 +198,7 @@
 @endpush
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="{{ asset('geojson/leaflet.ajax.js') }}"></script>
@@ -224,7 +227,7 @@
                         item.addEventListener('click', () => {
                             input.value = name;
                             autocompleteList.innerHTML =
-                            ''; // Clear suggestions after selection
+                                ''; // Clear suggestions after selection
                         });
                         autocompleteList.appendChild(item);
                     });
@@ -277,5 +280,14 @@
         var jsonTest = new L.GeoJSON.AJAX(["{{ asset('geojson/data2.geojson') }}"], {
             onEachFeature: popUp
         }).addTo(map);
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ session('error') }}',
+                confirmButtonText: 'OK'
+            });
+        @endif
     </script>
 @endpush

@@ -42,6 +42,11 @@ class LahanController extends Controller
             'akhir_tanam' => 'required|date|after_or_equal:awal_tanam',
         ]);
 
+        $check_lahan = Lahan::where('denah_lahan', $request->denah_lahan)->where('isi_lahan', $request->isi_lahan)->count();
+        if ($check_lahan != 0) {
+            return redirect()->back()->with('error', 'Pada lahan ini, data untuk tanaman ' . $request->isi_lahan . ' sudah ada dan prosesnya belum selesai')->withInput();
+        }
+
         $lahan = new Lahan();
 
         $lahan->nama_kelompok_tani = $request->nama_kelompok_tani;
@@ -139,12 +144,14 @@ class LahanController extends Controller
 
     public function detail_lahan($id)
     {
-        $lahan = Lahan::find($id);
-        $nama_penanggung_jawab = AlokasiPupuk::pluck('nama_penanggung_jawab')->unique()->toArray();
 
-        if(Auth::user()->role == 'admin'){
+        if (Auth::user()->role == 'admin') {
+            $lahan = Lahan::where('denah_lahan', $id)->where('status', 'berjalan')->get();
+            $nama_penanggung_jawab = AlokasiPupuk::pluck('nama_penanggung_jawab')->unique()->toArray();
+            // dd($lahan);
             return view('admin.alokasi-lahan', ['lahan' => $lahan, 'id' => $id, 'nama_penanggung_jawab' => $nama_penanggung_jawab]);
-        }else{
+        } else {
+            $lahan = Lahan::find($id);
             return view('users.alokasi-lahan', ['lahan' => $lahan, 'id' => $id]);
         }
     }

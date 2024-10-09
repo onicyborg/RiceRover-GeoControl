@@ -26,34 +26,99 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Penggarap</th>
+                            <th>Group Lahan</th>
                             <th>Nama Lahan</th>
+                            <th>Kelompok Tani</th>
                             <th>Luas Lahan</th>
-                            <th>Luas Tanam</th>
                             <th>Isi Lahan</th>
                             <th>Pemilik Lahan</th>
-                            <th>Total Hasil Panen</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($lahans as $index => $lahan)
+                        @php
+                            // Inisialisasi array kosong untuk melacak data yang sudah dikelompokkan
+                            $groupedLahans = [];
+                        @endphp
+
+                        @foreach ($lahans as $lahan)
+                            @php
+                                // Jika denah_lahan sudah ada, tambahkan isi_lahan dan pemilik_lahan ke yang sudah ada
+                                if (!isset($groupedLahans[$lahan->denah_lahan])) {
+                                    $groupedLahans[$lahan->denah_lahan] = [
+                                        'nama_lahan' => [$lahan->nama_lahan],
+                                        'luas_lahan' => [$lahan->luas_lahan],
+                                        'isi_lahan' => [$lahan->isi_lahan],
+                                        'pemilik_lahan' => [$lahan->pemilik_lahan],
+                                        'nama_kelompok_tani' => [$lahan->nama_kelompok_tani],
+                                    ];
+                                } else {
+                                    // Tambahkan isi_lahan baru jika belum ada
+                                    if (
+                                        !in_array($lahan->isi_lahan, $groupedLahans[$lahan->denah_lahan]['isi_lahan'])
+                                    ) {
+                                        $groupedLahans[$lahan->denah_lahan]['isi_lahan'][] = $lahan->isi_lahan;
+                                    }
+
+                                    // Tambahkan pemilik_lahan baru jika belum ada
+                                    if (
+                                        !in_array(
+                                            $lahan->pemilik_lahan,
+                                            $groupedLahans[$lahan->denah_lahan]['pemilik_lahan'],
+                                        )
+                                    ) {
+                                        $groupedLahans[$lahan->denah_lahan]['pemilik_lahan'][] = $lahan->pemilik_lahan;
+                                    }
+
+                                    if (
+                                        !in_array(
+                                            $lahan->nama_kelompok_tani,
+                                            $groupedLahans[$lahan->denah_lahan]['nama_kelompok_tani'],
+                                        )
+                                    ) {
+                                        $groupedLahans[$lahan->denah_lahan]['nama_kelompok_tani'][] = $lahan->nama_kelompok_tani;
+                                    }
+
+                                    if (
+                                        !in_array(
+                                            $lahan->luas_lahan,
+                                            $groupedLahans[$lahan->denah_lahan]['luas_lahan'],
+                                        )
+                                    ) {
+                                        $groupedLahans[$lahan->denah_lahan]['luas_lahan'][] = $lahan->luas_lahan;
+                                    }
+
+                                    if (
+                                        !in_array(
+                                            $lahan->nama_lahan,
+                                            $groupedLahans[$lahan->denah_lahan]['nama_lahan'],
+                                        )
+                                    ) {
+                                        $groupedLahans[$lahan->denah_lahan]['nama_lahan'][] = $lahan->nama_lahan;
+                                    }
+                                }
+                            @endphp
+                        @endforeach
+
+
+                        @php $index = 1; @endphp
+                        @foreach ($groupedLahans as $denah => $lahan)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $lahan->user->name }}</td>
-                                <td>{{ $lahan->nama_lahan }}</td>
-                                <td>{{ $lahan->luas_lahan }} M&sup2;</td>
-                                <td>{{ $lahan->luas_tanam }} M&sup2;</td>
-                                <td>{{ $lahan->isi_lahan }}</td>
-                                <td>{{ $lahan->pemilik_lahan }}</td>
-                                <td>{{ $lahan->hasil_panen }} Kg</td>
+                                <td>{{ $index }}</td>
+                                <td>Group Lahan {{ $index }}</td>
+                                <td>{{ ucwords(implode(', ', $lahan['nama_lahan'])) }}</td>
+                                <td>{{ ucwords(implode(', ', $lahan['nama_kelompok_tani'])) }}</td>
+                                <td>{{ ucwords(implode(', ', $lahan['luas_lahan'])) }} M²</td>
+                                <td>{{ ucwords(implode(', ', $lahan['isi_lahan'])) }}</td>
+                                <td>{{ ucwords(implode(', ', $lahan['pemilik_lahan'])) }}</td>
                                 <td>
-                                    <a href="/admin/detail-lahan/{{ $lahan->id }}"
+                                    <a href="/admin/detail-lahan/{{ $denah }}"
                                         class="btn btn-info d-flex justify-content-center align-items-center">
                                         <i class="bi bi-info-circle"></i>
                                     </a>
                                 </td>
                             </tr>
+                            @php $index++; @endphp
                         @endforeach
                     </tbody>
                 </table>
