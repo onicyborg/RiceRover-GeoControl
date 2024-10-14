@@ -57,7 +57,13 @@
                                 }
                             @endphp</p>
                         <p><strong>Luas Lahan:</strong> {{ $lahan[0]->luas_lahan }} M&sup2;</p>
-                        <p><strong>Luas Tanam:</strong> {{ $lahan[0]->luas_tanam }} M&sup2;</p>
+                        @php
+                            $luas_tanam = 0;
+                            foreach ($lahan as $item) {
+                                $luas_tanam += $item->luas_tanam;
+                            }
+                        @endphp
+                        <p><strong>Luas Tanam:</strong> {{ $luas_tanam }} M&sup2;</p>
                         <p><strong>Isi Lahan:</strong>
                             @php
                                 foreach ($lahan as $no => $item) {
